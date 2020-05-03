@@ -249,5 +249,6 @@ it better to be just or unjust (if one can get away with it)?[13] Do humans have
             [],
         ),
     ]
+
     logging.getLogger().setLevel("DEBUG")
     test_search_engine(pages)
