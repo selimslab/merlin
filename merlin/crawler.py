@@ -34,7 +34,7 @@ class AsyncCrawler:
 
     async def parse(self, data, url):
         soup = bs4.BeautifulSoup(data, features="html.parser")
-        links = set(a.get('href') for a in soup.find_all('a', href=True))
+        links = set(a.get("href") for a in soup.find_all("a", href=True))
         for link in links:
             asyncio.create_task(self.filter_url(link, url))
 
@@ -50,7 +50,9 @@ class AsyncCrawler:
         finally:
             self.busy.remove(url)
             self.done.add(url)
-            print(f"{len(self.todo)} todo, {len(self.busy)} pending, {len(self.done)} done")
+            print(
+                f"{len(self.todo)} todo, {len(self.busy)} pending, {len(self.done)} done"
+            )
             self.sem.release()
 
     async def filter_url(self, url, parent_url):
@@ -60,10 +62,10 @@ class AsyncCrawler:
         parsed_link = urllib.parse.urlparse(url)
         is_same_domain = self.root_netloc in parsed_link.netloc
         is_relevant_url = (
-                is_same_domain and
-                url not in self.todo and
-                url not in self.busy and
-                url not in self.done
+                is_same_domain
+                and url not in self.todo
+                and url not in self.busy
+                and url not in self.done
         )
         if is_relevant_url:
             self.sitemap[parsed_link.netloc].add(parsed_link.path)
@@ -100,5 +102,5 @@ def test_crawler():
     pprint(sitemap)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_crawler()

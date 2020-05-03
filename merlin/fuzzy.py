@@ -5,10 +5,11 @@ import re
 from collections import Counter
 
 
-def words(text): return re.findall(r'\w+', text.lower())
+def words(text):
+    return re.findall(r"\w+", text.lower())
 
 
-WORDS = Counter(words(open('big.txt').read()))
+WORDS = Counter(words(open("big.txt").read()))
 
 
 def P(word, N=sum(WORDS.values())):
@@ -23,7 +24,7 @@ def correction(word):
 
 def candidates(word):
     "Generate possible spelling corrections for word."
-    return (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])
+    return known([word]) or known(edits1(word)) or known(edits2(word)) or [word]
 
 
 def known(words):
@@ -33,7 +34,7 @@ def known(words):
 
 def edits1(word):
     "All edits that are one edit away from `word`."
-    letters = 'abcdefghijklmnopqrstuvwxyz'
+    letters = "abcdefghijklmnopqrstuvwxyz"
     splits = [(word[:i], word[i:]) for i in range(len(word) + 1)]
     deletes = [L + R[1:] for L, R in splits if R]
     transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R) > 1]
